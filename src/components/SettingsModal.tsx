@@ -60,7 +60,27 @@ export function SettingsModal({ onClose, onSaveSettings, onAddPrompt, currentSet
       return;
     }
     setIsSaving(true);
-    await onAddPrompt({ categoryId: promptCategory, imageUrl: promptImage, promptText });
+    
+    let finalPromptText = promptText;
+    
+    try {
+      // Translate the prompt if it is not in English
+      const response = await fetch('/api/translate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: promptText })
+      });
+      if (response.ok) {
+        const data = await response.json();
+        if (data.translatedText) {
+          finalPromptText = data.translatedText;
+        }
+      }
+    } catch (e) {
+      console.error('Translation failed', e);
+    }
+
+    await onAddPrompt({ categoryId: promptCategory, imageUrl: promptImage, promptText: finalPromptText });
     setPromptText('');
     setPromptImage('');
     setIsSaving(false);
