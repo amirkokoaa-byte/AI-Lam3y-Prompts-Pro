@@ -1,0 +1,6 @@
+{
+  "name": "Meigen Prompt Gallery",
+  "description": "A gallery of AI generated images and their corresponding prompts.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

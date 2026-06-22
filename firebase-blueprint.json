@@ -1,0 +1,29 @@
+{
+  "collections": [
+    {
+      "collectionId": "settings",
+      "description": "Global application settings",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "bannerUrl": { "type": "string" },
+          "siteTitle": { "type": "string" },
+          "siteSubtitle": { "type": "string" }
+        }
+      }
+    },
+    {
+      "collectionId": "prompts",
+      "description": "User-added prompts",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "categoryId": { "type": "string" },
+          "imageUrl": { "type": "string", "description": "Image URL or Base64 string" },
+          "promptText": { "type": "string" },
+          "createdAt": { "type": "number", "description": "Timestamp" }
+        }
+      }
+    }
+  ]
+}
