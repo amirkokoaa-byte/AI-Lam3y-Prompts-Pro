@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { CATEGORIES, MOCK_DATA } from './data';
+import { CATEGORIES, fetchTrendingPrompts } from './data';
 import { PromptCard } from './components/PromptCard';
 import { DetailView } from './components/DetailView';
 import { SettingsModal } from './components/SettingsModal';
@@ -15,6 +15,7 @@ export default function App() {
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
   const [selectedItem, setSelectedItem] = useState<PromptItem | null>(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [localPrompts, setLocalPrompts] = useState<PromptItem[]>([]);
 
   const [appSettings, setAppSettings] = useState({ 
     siteTitle: 'AI Lam3y Prompts Pro', 
@@ -24,6 +25,9 @@ export default function App() {
   const [firebasePrompts, setFirebasePrompts] = useState<PromptItem[]>([]);
 
   useEffect(() => {
+    // Fetch local json file
+    fetchTrendingPrompts().then(setLocalPrompts);
+
     const unsubSettings = onSnapshot(doc(db, 'settings', 'main'), (docSnap) => {
       if (docSnap.exists()) {
         const data = docSnap.data();
@@ -56,8 +60,8 @@ export default function App() {
   }, []);
 
   const allDataCombined = useMemo(() => {
-    return [...firebasePrompts, ...MOCK_DATA];
-  }, [firebasePrompts]);
+    return [...firebasePrompts, ...localPrompts];
+  }, [firebasePrompts, localPrompts]);
 
   const filteredData = useMemo(() => {
     return activeCategory 
